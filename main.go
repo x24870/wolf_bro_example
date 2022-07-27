@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"main/config"
 	"main/server"
 )
 
@@ -13,7 +14,9 @@ func main() {
 	defer cancel()
 
 	// Create HTTP server instance to listen on all interfaces.
-	address := fmt.Sprintf("%s:%s", "127.0.0.1", "8000")
+	address := fmt.Sprintf("%s:%s",
+		config.GetString("SERVER_LISTEN_ADDRESS"),
+		config.GetString("SERVER_LISTEN_PORT"))
 	server := server.CreateServer(ctx, address)
 
 	fmt.Printf("Initialization complete, listening on %s...\n", address)
