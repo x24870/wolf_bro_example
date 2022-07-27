@@ -7,3 +7,48 @@ services:
     environment:
       SERVER_LISTEN_ADDRESS: '0.0.0.0'
       SERVER_LISTEN_PORT: '8000'
+      MYSQL_DATABASE_DIALECT: 'mysql'
+      MYSQL_DATABASE_USERNAME: 'root'
+      MYSQL_DATABASE_PASSWORD: '1234'
+      MYSQL_DATABASE_HOST: '0.0.0.0'
+      MYSQL_DATABASE_PORT: '3306'
+      MYSQL_DATABASE_NAME: 'mysql_db'
+      POSTGRES_DATABASE_DIALECT: 'postgres'
+      POSTGRES_DATABASE_USERNAME: 'postgres'
+      POSTGRES_DATABASE_PASSWORD: '1234'
+      POSTGRES_DATABASE_HOST: '0.0.0.0'
+      POSTGRES_DATABASE_PORT: '5432'
+      POSTGRES_DATABASE_NAME: 'postgres_db'
+      DATABASE_MAX_IDLE_CONNECTIONS: '5'
+      DATABASE_MAX_OPEN_CONNECTIONS: '30'
+      DATABASE_MAX_CONN_LIFETIME_MS: '300000'
+    depends_on:
+      - 'mysql_db'
+      - 'postgres_db'
+    restart: 'always'
+  mysql_db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_DATABASE: 'mysql_db'
+      MYSQL_USER: 'user'
+      MYSQL_ROOT_PASSWORD: '1234'
+    restart: 'always'
+  postgres_db:
+    image: postgres
+    command:
+      - "-h"
+      - "0.0.0.0"
+      - "-c"
+      - "log_destination=stderr"
+      - "-c"
+      - "log_connections=yes"
+      - "-c"
+      - "log_disconnections=yes"
+      - "-c"
+      - "log_statement=all"
+    environment:
+      POSTGRES_DB: 'postgres_db'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '1234'
+    restart: 'always'

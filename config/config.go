@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"strconv"
+	"time"
 )
 
 // GetString returns a setting in string.
@@ -59,5 +60,11 @@ func GetUint64(key string) uint64 {
 		panic(err)
 	}
 
+	return val
+}
+
+// GetMilliseconds returns a setting in time.Duration.
+func GetMilliseconds(key string) time.Duration {
+	val := time.Duration(GetUint(key)) * time.Millisecond
 	return val
 }

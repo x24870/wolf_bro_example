@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"main/config"
+	"main/database"
 	"main/server"
 )
 
@@ -12,6 +13,10 @@ func main() {
 	// Create root context.
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	// Setup database module.
+	database.Initialize(ctx)
+	defer database.Finalize()
 
 	// Create HTTP server instance to listen on all interfaces.
 	address := fmt.Sprintf("%s:%s",
