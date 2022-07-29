@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"sync"
 
 	"main/api/middleware"
@@ -13,19 +12,6 @@ import (
 var router *gin.Engine
 var root *gin.RouterGroup
 var once sync.Once
-
-// respondWithErrorMessage responds to the request with the provided error message.
-func respondWithErrorMessage(ctx *gin.Context, status int,
-	format string, args ...interface{}) {
-
-	// Compose error message for logging and response.
-	message := fmt.Sprintf(format, args...)
-
-	// Log error message and respond to request.
-	ctx.AbortWithStatusJSON(status, gin.H{
-		"error": message,
-	})
-}
 
 // GetRouter returns the global HTTP router instance.
 func GetRouter() *gin.Engine {
