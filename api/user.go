@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"fmt"
+	"main/api/middleware"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -13,7 +14,10 @@ import (
 
 func init() {
 	// Setup domains router group.
-	root := GetRoot().Group("users")
+	root := GetRoot().Group("users",
+		middleware.Auth(),
+		middleware.FormatResponse(),
+	)
 	root.GET("", GetUsers)
 	root.GET("/:id", GetUser)
 }
@@ -37,9 +41,7 @@ func GetUsers(ctx *gin.Context) {
 	}
 
 	// Set results to context.
-	ctx.JSON(http.StatusOK, gin.H{
-		"users": users,
-	})
+	ctx.Set("response", users)
 }
 
 func GetUser(ctx *gin.Context) {
@@ -67,7 +69,5 @@ func GetUser(ctx *gin.Context) {
 	}
 
 	// Set results to context.
-	ctx.JSON(http.StatusOK, gin.H{
-		"users": user,
-	})
+	ctx.Set("response", user)
 }

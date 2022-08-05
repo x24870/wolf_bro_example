@@ -36,7 +36,7 @@ func initializeSingletons() {
 // Create a clean router and a root group with the given microservice prefix.
 func createRouterAndGroup(prefix string) (*gin.Engine, *gin.RouterGroup) {
 	// Create a clean HTTP router engine.
-	engine := gin.New()
+	engine := gin.Default()
 
 	// Configure HTTP router engine settings.
 	engine.RedirectTrailingSlash = true
